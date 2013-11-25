@@ -1,6 +1,10 @@
 apply plugin: 'maven'
 apply plugin: 'signing'
 
+def isReleaseBuild() {
+    return version.contains("SNAPSHOT") == false
+}
+
 def sonatypeRepositoryUrl
 if (isReleaseBuild()) {
     println 'RELEASE BUILD'
