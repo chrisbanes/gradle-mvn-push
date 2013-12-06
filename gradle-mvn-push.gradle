@@ -21,13 +21,10 @@ def isReleaseBuild() {
     return version.contains("SNAPSHOT") == false
 }
 
-def sonatypeRepositoryUrl
-if (isReleaseBuild()) {
-    println 'RELEASE BUILD'
-    sonatypeRepositoryUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-} else {
-    println 'DEBUG BUILD'
-    sonatypeRepositoryUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
+def configureSonatypeRepository = {
+    if (hasProperty('NEXUS_USERNAME') && hasProperty('NEXUS_PASSWORD')) {
+        authentication(userName: NEXUS_USERNAME, password: NEXUS_PASSWORD)
+    }
 }
 
 afterEvaluate { project ->
@@ -38,9 +35,8 @@ afterEvaluate { project ->
 
                 pom.artifactId = POM_ARTIFACT_ID
 
-                repository(url: sonatypeRepositoryUrl) {
-                    authentication(userName: NEXUS_USERNAME, password: NEXUS_PASSWORD)
-                }
+                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/", configureSonatypeRepository)
+                snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/", configureSonatypeRepository)
 
                 pom.project {
                     name POM_NAME
