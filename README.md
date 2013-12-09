@@ -60,7 +60,15 @@ Add the following at the end of each `build.gradle` that you wish to upload:
 You can now build and push:
 
 	gradle clean build uploadArchives
+	
+### Other Properties
 
+There are other properties which can be set:
+
+```
+RELEASE_REPOSITORY_URL (defaults to Maven Central's staging server)
+SNAPSHOT_REPOSITORY_URL (defaults to Maven Central's snapshot server)
+```
 
 ## License
 

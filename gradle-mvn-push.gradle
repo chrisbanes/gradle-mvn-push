@@ -21,10 +21,22 @@ def isReleaseBuild() {
     return version.contains("SNAPSHOT") == false
 }
 
-def configureSonatypeRepository = {
-    if (hasProperty('NEXUS_USERNAME') && hasProperty('NEXUS_PASSWORD')) {
-        authentication(userName: NEXUS_USERNAME, password: NEXUS_PASSWORD)
-    }
+def getReleaseRepositoryUrl() {
+    return hasProperty('RELEASE_REPOSITORY_URL') ? RELEASE_REPOSITORY_URL
+            : "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+}
+
+def getSnapshotRepositoryUrl() {
+    return hasProperty('SNAPSHOT_REPOSITORY_URL') ? SNAPSHOT_REPOSITORY_URL
+            : "https://oss.sonatype.org/content/repositories/snapshots/"
+}
+
+def getRepositoryUsername() {
+    return hasProperty('NEXUS_USERNAME') ? NEXUS_USERNAME : ""
+}
+
+def getRepositoryPassword() {
+    return hasProperty('NEXUS_PASSWORD') ? NEXUS_PASSWORD : ""
 }
 
 afterEvaluate { project ->
@@ -35,8 +47,12 @@ afterEvaluate { project ->
 
                 pom.artifactId = POM_ARTIFACT_ID
 
-                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/", configureSonatypeRepository)
-                snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/", configureSonatypeRepository)
+                repository(url: getReleaseRepositoryUrl()) {
+                    authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
+                }
+                snapshotRepository(url: getSnapshotRepositoryUrl()) {
+                    authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
+                }
 
                 pom.project {
                     name POM_NAME
@@ -80,18 +96,15 @@ afterEvaluate { project ->
 
     task androidJavadocsJar(type: Jar) {
         classifier = 'javadoc'
-        //basename = artifact_id
         from androidJavadocs.destinationDir
     }
 
     task androidSourcesJar(type: Jar) {
         classifier = 'sources'
-        //basename = artifact_id
         from android.sourceSets.main.allSource
     }
 
     artifacts {
-        //archives packageReleaseJar
         archives androidSourcesJar
         archives androidJavadocsJar
     }
