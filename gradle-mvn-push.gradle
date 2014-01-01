@@ -94,7 +94,7 @@ afterEvaluate { project ->
         source = android.sourceSets.main.allJava
     }
 
-    task androidJavadocsJar(type: Jar) {
+    task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
         classifier = 'javadoc'
         from androidJavadocs.destinationDir
     }
