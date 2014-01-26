@@ -1,7 +1,7 @@
 gradle-mvn-push
 ===============
 
-See this blog post for more context on this 'library': [http://chris.banes.me/blog/2013/08/27/pushing-aars-to-maven-central/]().
+See this blog post for more context on this 'library': [http://chris.banes.me/blog/2013/08/27/pushing-aars-to-maven-central/](http://chris.banes.me/blog/2013/08/27/pushing-aars-to-maven-central/).
 
 
 ## Usage
@@ -13,9 +13,15 @@ This is upto you.
 
 This will include the username and password to upload to the Maven server and so that they are kept local on your machine. The location defaults to `USER_HOME/.gradle/gradle.properties`.
 
+It may also include your signing key id, password, and secret key ring file (for signed uploads).  Signing is only necessary if you're putting release builds of your project on maven central.
+
 ```
 NEXUS_USERNAME=chrisbanes
 NEXUS_PASSWORD=g00dtry
+
+signing.keyId=ABCDEF12
+signing.password=n1c3try
+signing.secretKeyRingFile=~/.gnupg/secring.gpg
 ```
 
 ### 3. Create project root gradle.properties
