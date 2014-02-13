@@ -41,10 +41,6 @@ def getRepositoryPassword() {
 
 afterEvaluate { project ->
     uploadArchives {
-        afterEvaluate {
-            javadocs.classpath += files(android.plugin.runtimeJarList)
-        }
-
         repositories {
             mavenDeployer {
                 beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
