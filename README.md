@@ -1,7 +1,7 @@
 gradle-mvn-push
 ===============
 
-See this blog post for more context on this 'library': [http://chris.banes.me/blog/2013/08/27/pushing-aars-to-maven-central/](http://chris.banes.me/blog/2013/08/27/pushing-aars-to-maven-central/).
+See this blog post for more context on this 'library': [http://chris.banes.me/2013/08/27/pushing-aars-to-maven-central/](http://chris.banes.me/2013/08/27/pushing-aars-to-maven-central/).
 
 
 ## Usage
@@ -15,7 +15,7 @@ This will include the username and password to upload to the Maven server and so
 
 It may also include your signing key id, password, and secret key ring file (for signed uploads).  Signing is only necessary if you're putting release builds of your project on maven central.
 
-```
+```properties
 NEXUS_USERNAME=chrisbanes
 NEXUS_PASSWORD=g00dtry
 
@@ -27,7 +27,7 @@ signing.secretKeyRingFile=~/.gnupg/secring.gpg
 ### 3. Create project root gradle.properties
 You may already have this file, in which case just edit the original. This file should contain the POM values which are common to all of your sub-project (if you have any). For instance, here's [ActionBar-PullToRefresh's](https://github.com/chrisbanes/ActionBar-PullToRefresh):
 
-```
+```properties
 VERSION_NAME=0.9.2-SNAPSHOT
 VERSION_CODE=92
 GROUP=com.github.chrisbanes.actionbarpulltorefresh
@@ -49,7 +49,7 @@ The `VERSION_NAME` value is important. If it contains the keyword `SNAPSHOT` the
 ### 4. Create gradle.properties in each sub-project
 The values in this file are specific to the sub-project (and override those in the root `gradle.properties`). In this example, this is just the name, artifactId and packaging type:
 
-```
+```properties
 POM_NAME=ActionBar-PullToRefresh Library
 POM_ARTIFACT_ID=library
 POM_PACKAGING=aar
@@ -59,13 +59,17 @@ POM_PACKAGING=aar
 
 Add the following at the end of each `build.gradle` that you wish to upload:
 
-	apply from: 'https://raw.github.com/chrisbanes/gradle-mvn-push/master/gradle-mvn-push.gradle'
+```groovy
+apply from: 'https://raw.github.com/chrisbanes/gradle-mvn-push/master/gradle-mvn-push.gradle'
+```
 
 ### 6. Build and Push
 
 You can now build and push:
 
-	gradle clean build uploadArchives
+```bash
+$ gradle clean build uploadArchives
+```
 	
 ### Other Properties
 
