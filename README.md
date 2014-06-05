@@ -1,7 +1,7 @@
 gradle-mvn-push
 ===============
 
-See this blog post for more context on this 'library': [http://chris.banes.me/blog/2013/08/27/pushing-aars-to-maven-central/](http://chris.banes.me/blog/2013/08/27/pushing-aars-to-maven-central/).
+See this blog post for more context on this 'library': [http://chris.banes.me/2013/08/27/pushing-aars-to-maven-central/](http://chris.banes.me/blog/2013/08/27/pushing-aars-to-maven-central/).
 
 
 ## Usage
