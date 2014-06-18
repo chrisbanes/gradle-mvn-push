@@ -42,6 +42,7 @@ POM_LICENCE_URL=http://www.apache.org/licenses/LICENSE-2.0.txt
 POM_LICENCE_DIST=repo
 POM_DEVELOPER_ID=chrisbanes
 POM_DEVELOPER_NAME=Chris Banes
+POM_DEVELOPER_EMAIL=chris@example.com
 ```
 
 The `VERSION_NAME` value is important. If it contains the keyword `SNAPSHOT` then the build will upload to the snapshot server, if not then to the release server.
@@ -70,7 +71,7 @@ You can now build and push:
 ```bash
 $ gradle clean build uploadArchives
 ```
-	
+
 ### Other Properties
 
 There are other properties which can be set:
