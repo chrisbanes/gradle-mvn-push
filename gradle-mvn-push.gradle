@@ -93,7 +93,7 @@ afterEvaluate { project ->
     }
 
     task androidJavadocs(type: Javadoc) {
-        source = android.sourceSets.main.java.sourceFiles
+        source = android.sourceSets.main.allJava
         classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
         failOnError = "false"
     }
