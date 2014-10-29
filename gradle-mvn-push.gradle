@@ -95,7 +95,7 @@ afterEvaluate { project ->
     task androidJavadocs(type: Javadoc) {
         failOnError false // add this line
         source = android.sourceSets.main.java
-        classpath += project.files(android.plugin.getRuntimeJarList().join(File.pathSeparator))
+        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
     }
 
     task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
