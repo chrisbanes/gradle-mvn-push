@@ -39,6 +39,12 @@ def getRepositoryPassword() {
     return hasProperty('NEXUS_PASSWORD') ? NEXUS_PASSWORD : ""
 }
 
+def POM_DEVELOPERS
+if (hasProperty('POM_DEVELOPERS')) {
+   POM_DEVELOPERS = getProperty('POM_DEVELOPERS').split(",")
+} else {
+   POM_DEVELOPERS = [POM_DEVELOPER_ID, POM_DEVELOPER_NAME]
+}
 afterEvaluate { project ->
     uploadArchives {
         repositories {
@@ -77,9 +83,11 @@ afterEvaluate { project ->
                     }
 
                     developers {
-                        developer {
-                            id POM_DEVELOPER_ID
-                            name POM_DEVELOPER_NAME
+                        for (int i = 0; i < POM_DEVELOPERS.size(); i += 2) {
+                            developer {
+                                id POM_DEVELOPERS[i]
+                                name POM_DEVELOPERS[i + 1]
+                            }
                         }
                     }
                 }
