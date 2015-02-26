@@ -60,6 +60,7 @@ afterEvaluate { project ->
                     name POM_NAME
                     packaging POM_PACKAGING
                     description POM_DESCRIPTION
+                    uniqueVersion = POM_GENERATE_UNIQUE_SNAPSHOTS == "true"
                     url POM_URL
 
                     scm {
