@@ -17,8 +17,16 @@
 apply plugin: 'maven'
 apply plugin: 'signing'
 
+if (JavaVersion.current().isJava8Compatible()) {
+    allprojects {
+        tasks.withType(Javadoc) {
+            options.addStringOption('Xdoclint:none', '-quiet')
+        }
+    }
+}
+
 def isReleaseBuild() {
-    return VERSION_NAME.contains("SNAPSHOT") == false
+    return getPomVersionName().contains("SNAPSHOT") == false
 }
 
 def getReleaseRepositoryUrl() {
@@ -39,15 +47,151 @@ def getRepositoryPassword() {
     return hasProperty('NEXUS_PASSWORD') ? NEXUS_PASSWORD : ""
 }
 
+def getPomGroupId() {
+    if (hasProperty('GROUP')){
+        return GROUP
+    }else if (android.libraryVariants != null && android.libraryVariants.size() > 0){
+        return android.libraryVariants[0].applicationId
+    }else if (android.applicationVariants != null && android.applicationVariants.size() > 0){
+        return android.applicationVariants[0].applicationId
+    }else{
+        throw new InvalidUserDataException("You must set GROUP in gradle.properties file.")
+    }
+}
+
+def getPomArtifactId() {
+    if (hasProperty('POM_ARTIFACT_ID')){
+        return POM_ARTIFACT_ID
+    }else{
+        throw new InvalidUserDataException("You must set POM_ARTIFACT_ID in gradle.properties file.")
+    }
+}
+
+def getPomVersionName() {
+    if (hasProperty('VERSION_NAME')){
+        return VERSION_NAME
+    }else if ( android.defaultConfig.versionName != null){
+        return android.defaultConfig.versionName
+    }else{
+        throw new InvalidUserDataException("You must set VERSION_NAME in gradle.properties file.")
+    }
+}
+
+def getPomVersionCode() {
+    if (hasProperty('VERSION_CODE')){
+        return VERSION_CODE
+    }else if ( android.defaultConfig.versionCode != null){
+        return android.defaultConfig.versionCode
+    }else{
+        throw new InvalidUserDataException("You must set VERSION_CODE in gradle.properties file.")
+    }
+}
+
+def getPomPackaging() {
+    if (hasProperty('POM_PACKAGING')){
+        return POM_PACKAGING
+    }else{
+        return "aar"
+    }
+}
+
+def getPomName() {
+    if (hasProperty('POM_NAME')){
+        return POM_NAME
+    }else{
+        throw new InvalidUserDataException("You must set POM_NAME in gradle.properties file.")
+    }
+}
+
+def getPomDescription() {
+    if (hasProperty('POM_DESCRIPTION')){
+        return POM_DESCRIPTION
+    }else{
+        throw new InvalidUserDataException("You must set POM_DESCRIPTION in gradle.properties file.")
+    }
+}
+
+def getPomUrl() {
+    if (hasProperty('POM_URL')){
+        return POM_URL
+    }else{
+        throw new InvalidUserDataException("You must set POM_URL in gradle.properties file.")
+    }
+}
+
+def getPomScmUrl() {
+    if (hasProperty('POM_SCM_URL')){
+        return POM_SCM_URL
+    }else{
+        return getPomUrl();
+    }
+}
+
+def getPomScmConnection() {
+    if (hasProperty('POM_SCM_CONNECTION')){
+        return POM_SCM_CONNECTION
+    }else{
+        throw new InvalidUserDataException("You must set POM_SCM_CONNECTION in gradle.properties file.")
+    }
+}
+
+def getPomScmDevConnection() {
+    if (hasProperty('POM_SCM_DEV_CONNECTION')){
+        return POM_SCM_DEV_CONNECTION
+    }else{
+        return getPomScmConnection();
+    }
+}
+
+def getPomLicenseName() {
+    if (hasProperty('POM_LICENCE_NAME')){
+        return POM_LICENCE_NAME
+    }else{
+        throw new InvalidUserDataException("You must set POM_LICENCE_NAME in gradle.properties file.")
+    }
+}
+
+def getPomLicenseUrl() {
+    if (hasProperty('POM_LICENCE_URL')){
+        return POM_LICENCE_URL
+    }else{
+        throw new InvalidUserDataException("You must set POM_LICENCE_URL in gradle.properties file.")
+    }
+}
+
+def getPomLicenseDist() {
+    if (hasProperty('POM_LICENCE_DIST')){
+        return POM_LICENCE_DIST
+    }else{
+        throw new InvalidUserDataException("You must set POM_LICENCE_DIST in gradle.properties file.")
+    }
+}
+
+def getDeveloperId() {
+    if (hasProperty('POM_DEVELOPER_ID')){
+        return POM_DEVELOPER_ID
+    }else{
+        throw new InvalidUserDataException("You must set POM_DEVELOPER_ID in gradle.properties file.")
+    }
+}
+
+def getDeveloperName() {
+    if (hasProperty('POM_DEVELOPER_NAME')){
+        return POM_DEVELOPER_NAME
+    }else{
+        throw new InvalidUserDataException("You must set POM_DEVELOPER_NAME in gradle.properties file.")
+    }
+}
+
 afterEvaluate { project ->
     uploadArchives {
         repositories {
             mavenDeployer {
                 beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
-                pom.groupId = GROUP
-                pom.artifactId = POM_ARTIFACT_ID
-                pom.version = VERSION_NAME
+                pom.groupId = getPomGroupId()
+                pom.artifactId = getPomArtifactId()
+                pom.version = getPomVersionName()
 
                 repository(url: getReleaseRepositoryUrl()) {
                     authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
@@ -56,30 +200,43 @@ afterEvaluate { project ->
                     authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
                 }
 
+                def pomName = getPomName()
+                def pomPackaging = getPomPackaging()
+                def pomDescription = getPomDescription()
+                def pomUrl = getPomUrl()
+                def pomScmUrl = getPomScmUrl()
+                def pomScmConnection = getPomScmConnection()
+                def pomScmDevConnection = getPomScmDevConnection()
+                def pomLicenseName = getPomLicenseName()
+                def pomLicenseUrl = getPomLicenseUrl()
+                def pomDistribution = getPomLicenseDist()
+                def pomDeveloperId = getDeveloperId()
+                def pomDeveloperName = getDeveloperName()
+
                 pom.project {
-                    name POM_NAME
-                    packaging POM_PACKAGING
-                    description POM_DESCRIPTION
-                    url POM_URL
+                    name pomName
+                    packaging pomPackaging
+                    description pomDescription
+                    url pomUrl
 
                     scm {
-                        url POM_SCM_URL
-                        connection POM_SCM_CONNECTION
-                        developerConnection POM_SCM_DEV_CONNECTION
+                        url pomScmUrl
+                        connection pomScmConnection
+                        developerConnection pomScmDevConnection
                     }
 
                     licenses {
                         license {
-                            name POM_LICENCE_NAME
-                            url POM_LICENCE_URL
-                            distribution POM_LICENCE_DIST
+                            name pomLicenseName
+                            url pomLicenseUrl
+                            distribution pomDistribution
                         }
                     }
 
                     developers {
                         developer {
-                            id POM_DEVELOPER_ID
-                            name POM_DEVELOPER_NAME
+                            id pomDeveloperId
+                            name pomDeveloperName
                         }
                     }
                 }

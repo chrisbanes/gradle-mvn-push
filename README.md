@@ -28,15 +28,10 @@ signing.secretKeyRingFile=~/.gnupg/secring.gpg
 You may already have this file, in which case just edit the original. This file should contain the POM values which are common to all of your sub-project (if you have any). For instance, here's [ActionBar-PullToRefresh's](https://github.com/chrisbanes/ActionBar-PullToRefresh):
 
 ```properties
-VERSION_NAME=0.9.2-SNAPSHOT
-VERSION_CODE=92
-GROUP=com.github.chrisbanes.actionbarpulltorefresh
-
 POM_DESCRIPTION=A modern implementation of the pull-to-refresh for Android
 POM_URL=https://github.com/chrisbanes/ActionBar-PullToRefresh
-POM_SCM_URL=https://github.com/chrisbanes/ActionBar-PullToRefresh
 POM_SCM_CONNECTION=scm:git@github.com:chrisbanes/ActionBar-PullToRefresh.git
-POM_SCM_DEV_CONNECTION=scm:git@github.com:chrisbanes/ActionBar-PullToRefresh.git
+
 POM_LICENCE_NAME=The Apache Software License, Version 2.0
 POM_LICENCE_URL=http://www.apache.org/licenses/LICENSE-2.0.txt
 POM_LICENCE_DIST=repo
@@ -44,15 +39,12 @@ POM_DEVELOPER_ID=chrisbanes
 POM_DEVELOPER_NAME=Chris Banes
 ```
 
-The `VERSION_NAME` value is important. If it contains the keyword `SNAPSHOT` then the build will upload to the snapshot server, if not then to the release server.
-
 ### 4. Create gradle.properties in each sub-project
 The values in this file are specific to the sub-project (and override those in the root `gradle.properties`). In this example, this is just the name, artifactId and packaging type:
 
 ```properties
 POM_NAME=ActionBar-PullToRefresh Library
 POM_ARTIFACT_ID=library
-POM_PACKAGING=aar
 ```
 
 ### 5. Call the script from each sub-modules build.gradle
@@ -76,10 +68,19 @@ $ gradle clean build uploadArchives
 There are other properties which can be set:
 
 ```
+GROUP (default is packageName)
+VERSION_NAME (default is build.gradle versionName)
+VERSION_CODE (default is build.gradle versionCode)
+POM_SCM_URL (default is POM_URL value)
+POM_SCM_DEV_CONNECTION (default is POM_SCM_CONNECTION value)
+
+POM_PACKAGING (default is "aar")
+
 RELEASE_REPOSITORY_URL (defaults to Maven Central's staging server)
 SNAPSHOT_REPOSITORY_URL (defaults to Maven Central's snapshot server)
 ```
 
+If `VERSION_NAME` value contains the keyword `SNAPSHOT` then the build will upload to the snapshot server, if not then to the release server.
 ## License
 
     Copyright 2013 Chris Banes
