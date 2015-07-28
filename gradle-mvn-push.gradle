@@ -17,6 +17,14 @@
 apply plugin: 'maven'
 apply plugin: 'signing'
 
+if (JavaVersion.current().isJava8Compatible()) {
+    allprojects {
+        tasks.withType(Javadoc) {
+            options.addStringOption('Xdoclint:none', '-quiet')
+        }
+    }
+}
+
 def isReleaseBuild() {
     return getPomVersionName().contains("SNAPSHOT") == false
 }
