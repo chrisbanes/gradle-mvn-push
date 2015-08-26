@@ -42,6 +42,9 @@ POM_LICENCE_URL=http://www.apache.org/licenses/LICENSE-2.0.txt
 POM_LICENCE_DIST=repo
 POM_DEVELOPER_ID=chrisbanes
 POM_DEVELOPER_NAME=Chris Banes
+POM_DEVELOPER_EMAIL=Sample@email.com
+POM_DEVELOPER_ORGANIZATION=Org Name
+POM_DEVELOPER_ORGANIZATION_URL=https://github.com/chrisbanes/
 ```
 
 The `VERSION_NAME` value is important. If it contains the keyword `SNAPSHOT` then the build will upload to the snapshot server, if not then to the release server.

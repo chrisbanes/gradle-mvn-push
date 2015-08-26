@@ -80,6 +80,9 @@ afterEvaluate { project ->
                         developer {
                             id POM_DEVELOPER_ID
                             name POM_DEVELOPER_NAME
+                            email POM_DEVELOPER_EMAIL
+                            organization POM_DEVELOPER_ORGANIZATION
+                            organizationUrl POM_DEVELOPER_ORGANIZATION_URL
                         }
                     }
                 }
