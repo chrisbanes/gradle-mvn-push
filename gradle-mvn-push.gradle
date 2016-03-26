@@ -111,4 +111,12 @@ afterEvaluate { project ->
         archives androidSourcesJar
         archives androidJavadocsJar
     }
+
+    tasks.withType(Javadoc){
+        options.encoding = "UTF-8"
+        options.charSet = "UTF-8"
+        options.author = true
+        options.version = true
+//        options.links = "http://docs.oracle.com/javase/7/docs/api"
+    }
 }
