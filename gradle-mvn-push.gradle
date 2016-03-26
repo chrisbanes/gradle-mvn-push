@@ -93,6 +93,12 @@ afterEvaluate { project ->
     }
 
     task androidJavadocs(type: Javadoc) {
+        options{
+            encoding 'UTF-8'
+            charSet 'UTF-8'
+            author true
+            version true
+        }
         source = android.sourceSets.main.java.srcDirs
         classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
     }
@@ -110,5 +116,13 @@ afterEvaluate { project ->
     artifacts {
         archives androidSourcesJar
         archives androidJavadocsJar
+    }
+
+    tasks.withType(Javadoc){
+        options.encoding = "UTF-8"
+        options.charSet = "UTF-8"
+        options.author = true
+        options.version = true
+//        options.links = "http://docs.oracle.com/javase/7/docs/api"
     }
 }
