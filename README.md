@@ -7,7 +7,7 @@ See this blog post for more context on this 'library': [http://chris.banes.me/20
 ## Usage
 
 ### 1. Have a working Gradle build
-This is upto you.
+This is up to you.
 
 ### 2. Update your home gradle.properties
 
