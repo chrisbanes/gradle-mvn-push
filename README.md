@@ -46,6 +46,15 @@ POM_DEVELOPER_NAME=Chris Banes
 
 The `VERSION_NAME` value is important. If it contains the keyword `SNAPSHOT` then the build will upload to the snapshot server, if not then to the release server.
 
+Add the following lines to the project root build.gradle to read the version and group properties:
+
+```
+allprojects {
+    version = VERSION_NAME
+    group = GROUP
+}
+```
+
 ### 4. Create gradle.properties in each sub-project
 The values in this file are specific to the sub-project (and override those in the root `gradle.properties`). In this example, this is just the name, artifactId and packaging type:
 
