@@ -130,9 +130,12 @@ afterEvaluate { project ->
         }
     }
 
-    android.libraryVariants.all { variant ->
-        tasks.androidJavadocs.doFirst {
-            classpath += files(variant.javaCompileProvider.get().classpath.files.join(File.pathSeparator))
+    if (project.getPlugins().hasPlugin('com.android.application') ||
+            project.getPlugins().hasPlugin('com.android.library')) {
+        android.libraryVariants.all { variant ->
+            tasks.androidJavadocs.doFirst {
+                classpath += files(variant.javaCompileProvider.get().classpath.files.join(File.pathSeparator))
+            }
         }
     }
 
