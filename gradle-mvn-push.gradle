@@ -21,7 +21,7 @@ version = VERSION_NAME
 group = GROUP
 
 def isReleaseBuild() {
-    return VERSION_NAME.contains("SNAPSHOT") == false
+    return !VERSION_NAME.contains("SNAPSHOT")
 }
 
 def getReleaseRepositoryUrl() {
@@ -96,12 +96,12 @@ afterEvaluate { project ->
         }
 
         task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
-            classifier = 'javadoc'
+            archiveClassifier.set("javadoc")
             from androidJavadocs.destinationDir
         }
 
         task androidSourcesJar(type: Jar) {
-            classifier = 'sources'
+            archiveClassifier.set("sources")
             from android.sourceSets.main.java.source
         }
     }
